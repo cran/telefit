@@ -115,17 +115,20 @@ extractStData = function( X, Y, Z, t=NULL, D.s, D.r, mask.s = NULL, mask.r = NUL
   tLabs = t
   
   # filter out undesired timepoints
-  Y = Y[,,match(t, names(Y@data))]
+  Y = Y[,,match(t, names(Y@data)), drop =FALSE]
   for(i in 1:length(X)) {
-    X[[i]] = X[[i]][,,match(t, names(X[[i]]@data))]
+    X[[i]] = X[[i]][,,match(t, names(X[[i]]@data)), drop =FALSE]
   }
   for(i in 1:length(Z)) {
-    Z[[i]] = Z[[i]][,,match(t, names(Z[[i]]@data))]
+    Z[[i]] = Z[[i]][,,match(t, names(Z[[i]]@data)), drop =FALSE]
   }
   for(i in 1:length(mask.r)) {
     if(!is.null(mask.r[[i]])) {
-      mask.r[[i]] = mask.r[[i]][,,match(t, names(mask.r[[i]]@data))]
+      mask.r[[i]] = mask.r[[i]][,,match(t, names(mask.r[[i]]@data)), drop =FALSE]
     }
+  }
+  if(!is.null(mask.s)) {
+    mask.s = mask.s[,,match(t, names(mask.s@data)), drop =FALSE]
   }
   
   # convert time labels to column indices
@@ -144,10 +147,11 @@ extractStData = function( X, Y, Z, t=NULL, D.s, D.r, mask.s = NULL, mask.r = NUL
   # build local design matrices for each timepoint
   o = options('na.action')
   options(na.action = 'na.pass')
+  
   X.mat = foreach(tt = t, .combine = 'abind3') %do% {
     
     # extract data from each predictor
-    x = foreach(x = X, .combine='cbind') %do% { x@data@values[, tt] }
+    x = foreach(x = X, .combine='cbind') %do% { x@data@values[, tt, drop =FALSE] }
     
     # if a formula is not specified, add intercept if requested; return data
     if(!is.null(formula)) {
@@ -162,6 +166,11 @@ extractStData = function( X, Y, Z, t=NULL, D.s, D.r, mask.s = NULL, mask.r = NUL
   }
   options(na.action = o)
   
+  # correct for single-year extractions
+  if(length(t)==1) { 
+    X.mat = array(data = X.mat, dim = c(nrow(X.mat), 1, ncol(X.mat)))
+  }
+  
   
   # extract remote data
   
@@ -171,11 +180,12 @@ extractStData = function( X, Y, Z, t=NULL, D.s, D.r, mask.s = NULL, mask.r = NUL
     Z[[i]] = extractRegion(Z[[i]], D.r[[i]], type.r[i], aggfact.r, mask.r[[i]])
   
   # combine remote covariate data from each region
-  Z.mat = foreach(z = Z, .combine = 'rbind') %do% { matrix(z@data@values[, t], 
-                                                           ncol = length(t)) }
+  Z.mat = foreach(z = Z, .combine = 'rbind') %do% { 
+    matrix(z@data@values[, t, drop =FALSE], ncol = length(t)) 
+  }
 
   # extract response data
-  Y.mat = Y@data@values[,t]
+  Y.mat = Y@data@values[,t, drop =FALSE]
   
   # extract coordinates
   coords.s = coordinates(Y)
@@ -189,7 +199,7 @@ extractStData = function( X, Y, Z, t=NULL, D.s, D.r, mask.s = NULL, mask.r = NUL
   # remove local coordinates that have NA responses
   complete.data = complete.cases(Y.mat)
   Y.mat = matrix(Y.mat[complete.data,], ncol=length(t))
-  X.mat = X.mat[complete.data,,]
+  X.mat = X.mat[complete.data,,, drop = FALSE]
   coords.s = coords.s[complete.data,]
   
   # remove local coordinates that have NA covariates
@@ -198,7 +208,7 @@ extractStData = function( X, Y, Z, t=NULL, D.s, D.r, mask.s = NULL, mask.r = NUL
     complete.data = complete.data & complete.cases(X.mat[,,i])
   }
   Y.mat = matrix(Y.mat[complete.data,], ncol=length(t))
-  X.mat = X.mat[complete.data,,]
+  X.mat = X.mat[complete.data,,, drop = FALSE]
   coords.s = coords.s[complete.data,]
   
   
