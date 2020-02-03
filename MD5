@@ -1,6 +1,6 @@
-7bfa4772c2d439c18d60ce7c30ae00f7 *DESCRIPTION
-081fa15e767bfc3f59a4554530fd47fa *NAMESPACE
-8f10ae412b3a8e6691becefd41af8cc9 *NEWS.md
+9fb9a710a064eb25bd54b224697dfe48 *DESCRIPTION
+3ec072267325e4c1cabe9cf0ae299a9d *NAMESPACE
+7845aa923466f3ff9c5069e9651f0e88 *NEWS.md
 86a88acbf81d97c8ef2f499e0760d4bb *R/HPDinterval.stFit.R
 56c13c115a7bc4d8835e77d252c27696 *R/RcppExports.R
 efc2c5fb874bb055c98508f9f3a2bfeb *R/abind3.R
@@ -12,7 +12,7 @@ e0329fed584e7ecbf27ff79e7bb10ba1 *R/data.R
 4777464b48e670334ca3e803b61f88df *R/dgemkmm.R
 9f79c05a472b4e1062d65ac6cf724f52 *R/eof.R
 7f73f370db72560d3e98603ea40a037c *R/errDump.R
-fe027bb3537a42e22cb81ad94f5b47a4 *R/extractRegion.R
+0325953d8d38676389d1e33830840464 *R/extractRegion.R
 c116f6e31a635c21c6c92d1dce54251f *R/extractStData.R
 42d7d302f90b8a5fbf2ba4e4171028a1 *R/forwardsolve.kron.R
 7f6c596ba46395829a838a2d2aae11f4 *R/globals.R
@@ -35,7 +35,7 @@ a22889bd8cf33807c79c7185a88479e8 *R/plot.teleCor.R
 449a58b459d359b96b538cf701281954 *R/stEval.R
 f829e62e11f4ab226fa2de6640db31d8 *R/stFit.R
 f62f3e361d32461caff4d0f5714e9f92 *R/stLL.R
-1511625ce6880e7d6d2f91d66f9ab484 *R/stPredict.R
+589ad0e13d0d9dba4baf03f45c983c3a *R/stPredict.R
 147f78486cf64d0f1cccdeeb7fc7bbd7 *R/stSimulate.R
 1eda601fc92c3cb045f10a651e82a2c2 *R/stVIF.R
 a57ff6b754a6048d5e1c4f0f4ed58f9f *R/summariseAlpha.R
